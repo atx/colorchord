@@ -63,9 +63,8 @@ void NewFrame()
 
 	// Formatted WS2812B bytes
 	for (int i = 0; i < expected_lights; i++) {
-		// Is this the correct order for GRB?
-		push_ws_byte(ledOut[i*3+0]);
 		push_ws_byte(ledOut[i*3+1]);
+		push_ws_byte(ledOut[i*3+0]);
 		push_ws_byte(ledOut[i*3+2]);
 	}
 
