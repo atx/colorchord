@@ -282,7 +282,7 @@ int main(void)
 
 	usbd_dev = usbd_init(&st_usbfs_v1_usb_driver, &dev, &config, usb_strings, 3, usbd_control_buffer, sizeof(usbd_control_buffer));
 	usbd_register_set_config_callback(usbd_dev, cdcacm_set_config);
-	for (int i = 0; i < 0x400000; i++) {
+	for (int i = 0; i < 0x800000; i++) {
 		__asm__("nop");
 	}
 
