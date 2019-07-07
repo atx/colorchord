@@ -82,7 +82,6 @@ void NewFrame()
 
 int main( int argc, char ** argv )
 {
-	int wf = 0;
 	int ci;
 
 	if (argc < 2) {
@@ -97,21 +96,22 @@ int main( int argc, char ** argv )
 
 	InitColorChord();  // Changed by [olel] cause this was changed in embeddednf
 
-	while( ( ci = getchar() ) != EOF )
-	{
-		int cs = ci - 0x80;
-#ifdef USE_32DFT
-		PushSample32( ((int8_t)cs)*32 );
-#else
-		Push8BitIntegerSkippy( (int8_t)cs );
-#endif
-		wf++;
-		if( wf == 128 )
-		{
+	int wf = 0;
+	while (true) {
+		uint8_t data[2];
+		int ret = fread(data, 1, sizeof(data), stdin);
+		if (ret != 2) {
+			fprintf(stderr, "Input read failed\n");
+			return EXIT_FAILURE;
+		}
+		int16_t sample = data[0] | (data[1] << 8);
+		PushSample32(sample / 2);
+		if (wf++ == 128) {
 			NewFrame();
-			wf = 0; 
+			wf = 0;
 		}
 	}
+
 	return 0;
 }
 
